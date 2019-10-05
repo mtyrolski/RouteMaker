@@ -14,10 +14,12 @@
  */
 typedef struct Queue
 {
-    unsigned int* heap;         ///< heap with indexes: heap[i] == x <=> invertedHeap[x] == i
-    unsigned int* invertedHeap; ///< shows us which city occupies which position in the real mound
-    unsigned int size;          ///< size of heap (queue)
-}Queue;
+    unsigned int*
+        heap;  ///< heap with indexes: heap[i] == x <=> invertedHeap[x] == i
+    unsigned int* invertedHeap;  ///< shows us which city occupies which
+                                 ///< position in the real mound
+    unsigned int size;           ///< size of heap (queue)
+} Queue;
 
 /**
  * @brief Pop minimal element from queue

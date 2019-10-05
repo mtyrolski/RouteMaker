@@ -4,7 +4,6 @@
  * @author Michał Tyrolski
  */
 
-
 #ifndef __INT_LIST_H__
 #define __INT_LIST_H__
 
@@ -15,15 +14,14 @@
  */
 typedef struct IntList
 {
-    int value;              ///< value of node
-    struct IntList* next;   ///< pointer to next element
-}IntList;
+    int value;             ///< value of node
+    struct IntList* next;  ///< pointer to next element
+} IntList;
 
 /**
  * @brief frees list of integer
  * @param[in, out] list - source to free
  */
 void freeList(IntList* list);
-
 
 #endif /* __INT_LIST_H__ */

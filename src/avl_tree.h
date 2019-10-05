@@ -6,11 +6,10 @@
 #ifndef __AVL_TREE_H__
 #define __AVL_TREE_H__
 
-
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #include "utils.h"
 
@@ -23,7 +22,7 @@ typedef struct AVLNode
     struct AVLNode* left;   ///< left son of current node
     struct AVLNode* right;  ///< right son of current node
     int height;             ///< height of node
-}AVLNode;
+} AVLNode;
 
 /**
  * @brief goes deep into tree and accumulate its depth

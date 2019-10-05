@@ -7,8 +7,8 @@
 #ifndef __STRING_VECTOR_H__
 #define __STRING_VECTOR_H__
 
-#include "stdlib.h"
 #include "stdbool.h"
+#include "stdlib.h"
 
 /** Default capacity for vector */
 #define DEFAULT_CAPACITY 64
@@ -19,10 +19,10 @@
  */
 typedef struct StringVector
 {
-    int bufferSize;     ///< size of buffer
-    int size;           ///< size of vector
-    char** content;     ///< content of vector
-}StringVector;
+    int bufferSize;  ///< size of buffer
+    int size;        ///< size of vector
+    char** content;  ///< content of vector
+} StringVector;
 
 /**
  * @brief allocate new vector

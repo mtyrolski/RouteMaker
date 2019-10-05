@@ -21,7 +21,6 @@ LinkedRoute* getRouteWithID(LinkedRoute* routeList, unsigned id)
     return routeList;
 }
 
-
 void deleteRoutes(LinkedRoute* routeList)
 {
     while(routeList != NULL)
@@ -34,7 +33,8 @@ void deleteRoutes(LinkedRoute* routeList)
     }
 }
 
-void generateAllPossiblePaths(LinkedCity** previous, City* first, City* second, CityLists** routes, LinkedCity** route)
+void generateAllPossiblePaths(LinkedCity** previous, City* first, City* second,
+                              CityLists** routes, LinkedCity** route)
 {
     if(first == second)
     {
@@ -60,10 +60,12 @@ void generateAllPossiblePaths(LinkedCity** previous, City* first, City* second, 
     }
 
     (*route) = nextRoute;
-    generateAllPossiblePaths(previous, first, previous[second->id]->city, routes, route);
+    generateAllPossiblePaths(previous, first, previous[second->id]->city,
+                             routes, route);
 }
 
-void processCurrentPrev(LinkedCity** prev, LinkedCity** previous, City* city, CityLists** routes, LinkedCity** route)
+void processCurrentPrev(LinkedCity** prev, LinkedCity** previous, City* city,
+                        CityLists** routes, LinkedCity** route)
 {
     LinkedCity* tempNewRoute = deepCopyLinkedList(*route);
     LinkedCity* temp = malloc(sizeof(LinkedCity));
@@ -76,21 +78,25 @@ void processCurrentPrev(LinkedCity** prev, LinkedCity** previous, City* city, Ci
     temp->city = (*prev)->city;
     temp->next = tempNewRoute;
     tempNewRoute = temp;
-    generateAllPossiblePaths(previous, city, (*prev)->city, routes, &tempNewRoute);
+    generateAllPossiblePaths(previous, city, (*prev)->city, routes,
+                             &tempNewRoute);
     *prev = (*prev)->next;
 }
 
-CityLists* getRoutesWithTheSmallestLength(LinkedCity** previous, City* first, City* second)
+CityLists* getRoutesWithTheSmallestLength(LinkedCity** previous, City* first,
+                                          City* second)
 {
     CityLists* routes = NULL;
     LinkedCity* route = malloc(sizeof(LinkedCity));
     route->city = second;
     route->next = NULL;
-    generateAllPossiblePaths(previous, first, second, &routes , &route);
+    generateAllPossiblePaths(previous, first, second, &routes, &route);
     return routes;
 }
 
-bool prepareVariablesForDijkstra(long** destination, bool** choosenTab, LinkedCity*** previous, Queue** queue, unsigned citySize)
+bool prepareVariablesForDijkstra(long** destination, bool** choosenTab,
+                                 LinkedCity*** previous, Queue** queue,
+                                 unsigned citySize)
 {
     *destination = malloc(citySize * sizeof(long));
     if(*destination == NULL)
@@ -146,9 +152,10 @@ bool prepareVariablesForDijkstra(long** destination, bool** choosenTab, LinkedCi
     return true;
 }
 
-void prepareValues(Queue** queue, long** destination, bool** choosenTab, LinkedCity*** previous)
+void prepareValues(Queue** queue, long** destination, bool** choosenTab,
+                   LinkedCity*** previous)
 {
-    for(unsigned int i=0; i<(*queue)->size; i++)
+    for(unsigned int i = 0; i < (*queue)->size; i++)
     {
         (*queue)->invertedHeap[i] = i;
         (*queue)->heap[i] = i;
@@ -158,24 +165,28 @@ void prepareValues(Queue** queue, long** destination, bool** choosenTab, LinkedC
     }
 }
 
-void ignoreForbidden(bool** choosenTab, Queue** queue, City* first, City* second, LinkedCity* route)
+void ignoreForbidden(bool** choosenTab, Queue** queue, City* first,
+                     City* second, LinkedCity* route)
 {
     LinkedCity* forbiddenInDijkstraIterator = route;
 
     while(forbiddenInDijkstraIterator != NULL)
     {
-        if(forbiddenInDijkstraIterator->city != first && forbiddenInDijkstraIterator->city != second)
+        if(forbiddenInDijkstraIterator->city != first &&
+           forbiddenInDijkstraIterator->city != second)
         {
             (*choosenTab)[forbiddenInDijkstraIterator->city->id] = true;
-            swapElements(*queue, (*queue)->heap[forbiddenInDijkstraIterator->city->id], (*queue)->size - 1);
+            swapElements(*queue,
+                         (*queue)->heap[forbiddenInDijkstraIterator->city->id],
+                         (*queue)->size - 1);
             (*queue)->size--;
         }
         forbiddenInDijkstraIterator = forbiddenInDijkstraIterator->next;
     }
-
 }
 
-void updateRoutesWithRoad(int value, IntList** first, LinkedRoute** routesWithRoad, LinkedRoute* routes)
+void updateRoutesWithRoad(int value, IntList** first,
+                          LinkedRoute** routesWithRoad, LinkedRoute* routes)
 {
     IntList* tempIntList = malloc(sizeof(IntList));
     tempIntList->value = value;
@@ -187,8 +198,8 @@ void updateRoutesWithRoad(int value, IntList** first, LinkedRoute** routesWithRo
     (*routesWithRoad) = tempRouteList;
 }
 
-
-void addIfTargetIsOnBegin(IntList** first, City* townSecond, LinkedRoute** routesWithRoad, LinkedRoute* routes)
+void addIfTargetIsOnBegin(IntList** first, City* townSecond,
+                          LinkedRoute** routesWithRoad, LinkedRoute* routes)
 {
     if(routes->route->cityLists->next->city != townSecond)
     {
@@ -198,8 +209,8 @@ void addIfTargetIsOnBegin(IntList** first, City* townSecond, LinkedRoute** route
     updateRoutesWithRoad(1, first, routesWithRoad, routes);
 }
 
-
-void addTargetInGeneralCase(IntList** first, City* townFirst, City* townSecond, LinkedRoute** routesWithRoad, LinkedRoute* routes)
+void addTargetInGeneralCase(IntList** first, City* townFirst, City* townSecond,
+                            LinkedRoute** routesWithRoad, LinkedRoute* routes)
 {
     LinkedCity* cityList = routes->route->cityLists;
 
@@ -209,17 +220,20 @@ void addTargetInGeneralCase(IntList** first, City* townFirst, City* townSecond, 
     }
 
     if(cityList->next == NULL || !(cityList->city == townSecond ||
-                                   (cityList->next->next != NULL && cityList->next->next->city == townSecond)))
+                                   (cityList->next->next != NULL &&
+                                    cityList->next->next->city == townSecond)))
     {
         return;
     }
-    updateRoutesWithRoad(cityList->city == townSecond ? 2 : 1, first, routesWithRoad, routes);
+    updateRoutesWithRoad(cityList->city == townSecond ? 2 : 1, first,
+                         routesWithRoad, routes);
 }
 
-
-bool initDijkstra(long** destination, bool** choosenTab, LinkedCity*** previous, Queue** queue, unsigned citySize)
+bool initDijkstra(long** destination, bool** choosenTab, LinkedCity*** previous,
+                  Queue** queue, unsigned citySize)
 {
-    if(!prepareVariablesForDijkstra(destination, choosenTab, previous, queue, citySize))
+    if(!prepareVariablesForDijkstra(destination, choosenTab, previous, queue,
+                                    citySize))
     {
         return false;
     }
@@ -227,7 +241,8 @@ bool initDijkstra(long** destination, bool** choosenTab, LinkedCity*** previous,
     return true;
 }
 
-void finishDijkstra(unsigned citySize, long* destination, Queue* queue, LinkedCity** previous, bool* choosenTab)
+void finishDijkstra(unsigned citySize, long* destination, Queue* queue,
+                    LinkedCity** previous, bool* choosenTab)
 {
     free(destination);
     for(unsigned i = 0; i < citySize; i++)
@@ -242,9 +257,11 @@ void finishDijkstra(unsigned citySize, long* destination, Queue* queue, LinkedCi
 }
 
 bool updateDestination(long* destination, LinkedCity** previous, Queue* queue,
-                       City* currentCity, Road* roadToNeighbour, City* neighbour, int idNeighbour)
+                       City* currentCity, Road* roadToNeighbour,
+                       City* neighbour, int idNeighbour)
 {
-    destination[neighbour->id] = destination[currentCity->id] + roadToNeighbour->length;
+    destination[neighbour->id] =
+        destination[currentCity->id] + roadToNeighbour->length;
     balanceHeap(queue, destination, queue->heap[idNeighbour]);
 
     freeLinkedCity(previous[idNeighbour]);
@@ -262,32 +279,40 @@ bool updateDestination(long* destination, LinkedCity** previous, Queue* queue,
     return true;
 }
 
-void considerNeighbour(long* destination, bool* choosenTab, LinkedCity** previous, Queue* queue,
-        City* currentCity,Road* roadToNeighbour, City* neighbour, Road* forbiddenRoad, unsigned citySize)
+void considerNeighbour(long* destination, bool* choosenTab,
+                       LinkedCity** previous, Queue* queue, City* currentCity,
+                       Road* roadToNeighbour, City* neighbour,
+                       Road* forbiddenRoad, unsigned citySize)
 {
     int idNeighbour = neighbour->id;
     if(!choosenTab[idNeighbour] && (roadToNeighbour != forbiddenRoad))
     {
-
-        if(destination[currentCity->id] + roadToNeighbour->length < destination[idNeighbour])
+        if(destination[currentCity->id] + roadToNeighbour->length <
+           destination[idNeighbour])
         {
-            if(!updateDestination(destination, previous, queue, currentCity, roadToNeighbour, neighbour, idNeighbour))
+            if(!updateDestination(destination, previous, queue, currentCity,
+                                  roadToNeighbour, neighbour, idNeighbour))
             {
-                finishDijkstra(citySize, destination, queue, previous, choosenTab);
+                finishDijkstra(citySize, destination, queue, previous,
+                               choosenTab);
                 return;
             }
-        }else
+        }
+        else
         {
-            if(destination[currentCity->id]+roadToNeighbour->length == destination[idNeighbour])
+            if(destination[currentCity->id] + roadToNeighbour->length ==
+               destination[idNeighbour])
             {
-                previous[idNeighbour] = initLinkedCity(currentCity, previous[idNeighbour]);
+                previous[idNeighbour] =
+                    initLinkedCity(currentCity, previous[idNeighbour]);
             }
         }
     }
 }
 
 bool dijkstraLoopProcess(long* destination, Queue* queue, bool* choosenTab,
-                         LinkedCity** previous, unsigned citySize, City** cities, Road* forbiddenRoad)
+                         LinkedCity** previous, unsigned citySize,
+                         City** cities, Road* forbiddenRoad)
 {
     if(destination[queue->invertedHeap[0]] == LONG_MAX)
     {
@@ -298,14 +323,16 @@ bool dijkstraLoopProcess(long* destination, Queue* queue, bool* choosenTab,
     City* currentCity = cities[popMin(queue, destination)];
     for(int i = 0; i < currentCity->numberOfNeighbours; i++)
     {
-        considerNeighbour(destination, choosenTab, previous, queue, currentCity, currentCity->roads[i],
-                currentCity->neighbours[i], forbiddenRoad, citySize);
+        considerNeighbour(destination, choosenTab, previous, queue, currentCity,
+                          currentCity->roads[i], currentCity->neighbours[i],
+                          forbiddenRoad, citySize);
     }
     choosenTab[currentCity->id] = true;
     return true;
 }
 
-CityLists* dijkstra(unsigned citySize, City** cities, City* first, City* second, LinkedCity* route, long* length, Road* forbiddenRoad)
+CityLists* dijkstra(unsigned citySize, City** cities, City* first, City* second,
+                    LinkedCity* route, long* length, Road* forbiddenRoad)
 {
     long* destination = NULL;
     bool* choosenTab = NULL;
@@ -321,9 +348,11 @@ CityLists* dijkstra(unsigned citySize, City** cities, City* first, City* second,
     destination[first->id] = 0;
     swapElements(queue, queue->heap[first->id], 0);
 
-    while(queue->size != 0 && (cities[queue->invertedHeap[0]] != second || destination[queue->invertedHeap[0]] == LONG_MAX))
+    while(queue->size != 0 && (cities[queue->invertedHeap[0]] != second ||
+                               destination[queue->invertedHeap[0]] == LONG_MAX))
     {
-        if(!dijkstraLoopProcess(destination, queue, choosenTab, previous, citySize, cities, forbiddenRoad))
+        if(!dijkstraLoopProcess(destination, queue, choosenTab, previous,
+                                citySize, cities, forbiddenRoad))
         {
             return NULL;
         }
@@ -360,7 +389,9 @@ void emplacePath(LinkedRoute* routes, City* city, CityLists* paths)
     routes->route->cityLists = saver;
 }
 
-bool finishConsideringWithoutAction(CityLists** fromBeginToTown, CityLists** fromEndToTown, LinkedCity** finish, LinkedCity** itr)
+bool finishConsideringWithoutAction(CityLists** fromBeginToTown,
+                                    CityLists** fromEndToTown,
+                                    LinkedCity** finish, LinkedCity** itr)
 {
     *itr = findRoute(*fromEndToTown);
 
@@ -377,7 +408,10 @@ bool finishConsideringWithoutAction(CityLists** fromBeginToTown, CityLists** fro
     return true;
 }
 
-bool finishConsideringWithRepinInequality(CityLists** fromBeginToTown, CityLists** fromEndToTown, LinkedCity** itr, LinkedCity** cityList)
+bool finishConsideringWithRepinInequality(CityLists** fromBeginToTown,
+                                          CityLists** fromEndToTown,
+                                          LinkedCity** itr,
+                                          LinkedCity** cityList)
 {
     *itr = findRoute(*fromBeginToTown);
 
@@ -400,7 +434,8 @@ bool finishConsideringWithRepinInequality(CityLists** fromBeginToTown, CityLists
     return true;
 }
 
-void repinPaths(CityLists** fromBeginToTown, CityLists** fromEndToTown, LinkedCity** itr)
+void repinPaths(CityLists** fromBeginToTown, CityLists** fromEndToTown,
+                LinkedCity** itr)
 {
     CityLists* routes = *fromBeginToTown;
 
@@ -413,13 +448,15 @@ void repinPaths(CityLists** fromBeginToTown, CityLists** fromEndToTown, LinkedCi
     *itr = findRoute(routes);
 }
 
-void repinCityLists(LinkedCity** finish, LinkedCity** cityList, LinkedCity** itr)
+void repinCityLists(LinkedCity** finish, LinkedCity** cityList,
+                    LinkedCity** itr)
 {
     if((*itr)->city == (*finish)->city)
     {
         (*finish)->next = (*itr)->next;
         free(*itr);
-    }else
+    }
+    else
     {
         LinkedCity* temp = *itr;
         while((*itr)->next->city != (*cityList)->city)
@@ -430,10 +467,11 @@ void repinCityLists(LinkedCity** finish, LinkedCity** cityList, LinkedCity** itr
         (*itr)->next = *cityList;
         *cityList = temp;
     }
-
 }
 
-bool finishConsideringWithRepinEquality(CityLists** fromBeginToTown, CityLists** fromEndToTown, LinkedCity** finish,
+bool finishConsideringWithRepinEquality(CityLists** fromBeginToTown,
+                                        CityLists** fromEndToTown,
+                                        LinkedCity** finish,
                                         LinkedCity** cityList, LinkedCity** itr)
 {
     repinPaths(fromBeginToTown, fromEndToTown, itr);
@@ -446,20 +484,23 @@ bool finishConsideringWithRepinEquality(CityLists** fromBeginToTown, CityLists**
 }
 
 bool considerDestinations(long beginDestination, long endDestination,
-                          CityLists** fromBeginToTown, CityLists** fromEndToTown, LinkedCity** finish,
+                          CityLists** fromBeginToTown,
+                          CityLists** fromEndToTown, LinkedCity** finish,
                           LinkedCity** cityList, Route** route)
 {
     LinkedCity* itr = NULL;
 
     if((beginDestination > endDestination &&
-        !finishConsideringWithoutAction(fromBeginToTown, fromEndToTown, finish, &itr)) ||
+        !finishConsideringWithoutAction(fromBeginToTown, fromEndToTown, finish,
+                                        &itr)) ||
        (beginDestination < endDestination &&
-        !finishConsideringWithRepinInequality(fromBeginToTown, fromEndToTown, &itr, cityList)) ||
+        !finishConsideringWithRepinInequality(fromBeginToTown, fromEndToTown,
+                                              &itr, cityList)) ||
        (beginDestination == endDestination &&
-        !finishConsideringWithRepinEquality(fromBeginToTown, fromEndToTown, finish, cityList, &itr)))
+        !finishConsideringWithRepinEquality(fromBeginToTown, fromEndToTown,
+                                            finish, cityList, &itr)))
     {
         return false;
-
     }
 
     (*route)->cityLists = *cityList;

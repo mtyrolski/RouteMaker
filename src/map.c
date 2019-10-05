@@ -14,7 +14,7 @@ Map* newMap(void)
     return map;
 }
 
-void deleteMap(Map *map)
+void deleteMap(Map* map)
 {
     if(map == NULL)
     {
@@ -29,7 +29,7 @@ void deleteMap(Map *map)
     free(map);
 }
 
-Road* adaptRoad(Map *map, unsigned length, int builtYear)
+Road* adaptRoad(Map* map, unsigned length, int builtYear)
 {
     Road* road = initRoad(length, builtYear);
 
@@ -50,19 +50,18 @@ Road* adaptRoad(Map *map, unsigned length, int builtYear)
     return road;
 }
 
-
-void addCityToMap(Map *map, City* city)
+void addCityToMap(Map* map, City* city)
 {
     map->citySize++;
     map->cities = realloc(map->cities, map->citySize * sizeof(City*));
-    map->cities[map->citySize-1] = city;
+    map->cities[map->citySize - 1] = city;
 }
 
 bool tryInitCities(Map* map, const char* city1, const char* city2)
 {
-    if(city1 == NULL || city2 == NULL || strcmp(city1,city2) == 0
-       || strcmp(city1, "")  == 0|| strcmp(city2, "") == 0 || !checkString(city1, 0, 31,  ";", 1)
-       || !checkString(city2, 0, 31, ";", 1))
+    if(city1 == NULL || city2 == NULL || strcmp(city1, city2) == 0 ||
+       strcmp(city1, "") == 0 || strcmp(city2, "") == 0 ||
+       !checkString(city1, 0, 31, ";", 1) || !checkString(city2, 0, 31, ";", 1))
     {
         return false;
     }
@@ -93,10 +92,13 @@ bool tryInitCities(Map* map, const char* city1, const char* city2)
     return true;
 }
 
-bool updateRoads(Map* map, City* first, City* second, unsigned length, int builtYear)
+bool updateRoads(Map* map, City* first, City* second, unsigned length,
+                 int builtYear)
 {
-    first->roads = realloc(first->roads, first->numberOfNeighbours*sizeof(Road*));
-    second->roads = realloc(second->roads, second->numberOfNeighbours*sizeof(Road*));
+    first->roads =
+        realloc(first->roads, first->numberOfNeighbours * sizeof(Road*));
+    second->roads =
+        realloc(second->roads, second->numberOfNeighbours * sizeof(Road*));
 
     if(first->roads == NULL || second->roads == NULL)
     {
@@ -109,13 +111,14 @@ bool updateRoads(Map* map, City* first, City* second, unsigned length, int built
     }
 
     Road* road = adaptRoad(map, length, builtYear);
-    first->roads[first->numberOfNeighbours-1] = road;
-    second->roads[second->numberOfNeighbours-1] = road;
+    first->roads[first->numberOfNeighbours - 1] = road;
+    second->roads[second->numberOfNeighbours - 1] = road;
 
     return true;
 }
 
-bool updateInfrastructure(Map* map, const char* city1, const char* city2, unsigned length, int builtYear)
+bool updateInfrastructure(Map* map, const char* city1, const char* city2,
+                          unsigned length, int builtYear)
 {
     City* first = getByKey(map->ramp, city1);
     City* second = getByKey(map->ramp, city2);
@@ -131,7 +134,8 @@ bool updateInfrastructure(Map* map, const char* city1, const char* city2, unsign
     return updateRoads(map, first, second, length, builtYear);
 }
 
-bool addRoad(Map* map, const char* city1, const char* city2, unsigned length, int builtYear)
+bool addRoad(Map* map, const char* city1, const char* city2, unsigned length,
+             int builtYear)
 {
     if(builtYear == 0 || length <= 0 || !tryInitCities(map, city1, city2))
     {
@@ -141,7 +145,8 @@ bool addRoad(Map* map, const char* city1, const char* city2, unsigned length, in
     return updateInfrastructure(map, city1, city2, length, builtYear);
 }
 
-bool updateRoad(Map* map, const char* city1, const char* city2, unsigned length, int builtYear)
+bool updateRoad(Map* map, const char* city1, const char* city2, unsigned length,
+                int builtYear)
 {
     if(builtYear == 0 || length <= 0)
     {
@@ -151,7 +156,8 @@ bool updateRoad(Map* map, const char* city1, const char* city2, unsigned length,
     City* first = getByKey(map->ramp, city1);
     City* second = getByKey(map->ramp, city2);
 
-    if(first == NULL || second == NULL ||  getIdOfRoadBetween(first, second) == -1)
+    if(first == NULL || second == NULL ||
+       getIdOfRoadBetween(first, second) == -1)
     {
         return addRoad(map, city1, city2, length, builtYear);
     }
@@ -159,7 +165,8 @@ bool updateRoad(Map* map, const char* city1, const char* city2, unsigned length,
     int idx = getIdOfRoadBetween(first, second);
     Road* considered = first->roads[idx];
 
-    if(considered == NULL || considered->length != length || considered->year > builtYear)
+    if(considered == NULL || considered->length != length ||
+       considered->year > builtYear)
     {
         return false;
     }
@@ -169,21 +176,24 @@ bool updateRoad(Map* map, const char* city1, const char* city2, unsigned length,
     return true;
 }
 
-
 bool repairRoad(Map* map, const char* city1, const char* city2, int repairYear)
 {
-    return repairYear != 0 && tryRepairRoad(getByKey(map->ramp, city1), getByKey(map->ramp, city2), repairYear);
+    return repairYear != 0 &&
+           tryRepairRoad(getByKey(map->ramp, city1), getByKey(map->ramp, city2),
+                         repairYear);
 }
 
-LinkedRoute* fillRoutesWithRoad(City* firstCity, City* secondCity, LinkedRoute* routes, IntList** first)
+LinkedRoute* fillRoutesWithRoad(City* firstCity, City* secondCity,
+                                LinkedRoute* routes, IntList** first)
 {
     LinkedRoute* routesWithRoad = NULL;
 
     while(routes != NULL)
     {
-        routes->route->cityLists->city == firstCity ?
-            addIfTargetIsOnBegin(first, secondCity, &routesWithRoad, routes):
-            addTargetInGeneralCase(first, firstCity, secondCity, &routesWithRoad, routes);
+        routes->route->cityLists->city == firstCity
+            ? addIfTargetIsOnBegin(first, secondCity, &routesWithRoad, routes)
+            : addTargetInGeneralCase(first, firstCity, secondCity,
+                                     &routesWithRoad, routes);
 
         routes = routes->next;
     }
@@ -191,17 +201,21 @@ LinkedRoute* fillRoutesWithRoad(City* firstCity, City* secondCity, LinkedRoute* 
     return routesWithRoad;
 }
 
-bool fillPotentialReplacementForRoad(Map *map, LinkedRoute** routesWithRoad, IntList** first, City* firstCity,
-        City* secondCity, Road* forbiddenRoad, CityLists** newPaths, LinkedRoute** beginsOfRoutes,
-        IntList** earliestBegin, CityLists* newRoutes)
+bool fillPotentialReplacementForRoad(
+    Map* map, LinkedRoute** routesWithRoad, IntList** first, City* firstCity,
+    City* secondCity, Road* forbiddenRoad, CityLists** newPaths,
+    LinkedRoute** beginsOfRoutes, IntList** earliestBegin, CityLists* newRoutes)
 {
     while((*routesWithRoad) != NULL)
     {
-        CityLists* tempList = (*first)->value == 1 ?
-               dijkstra(map->citySize, map->cities, firstCity,
-                        secondCity, (*routesWithRoad)->route->cityLists, NULL, forbiddenRoad) :
-               dijkstra(map->citySize, map->cities, secondCity, firstCity,
-                        (*routesWithRoad)->route->cityLists, NULL, forbiddenRoad);
+        CityLists* tempList =
+            (*first)->value == 1
+                ? dijkstra(map->citySize, map->cities, firstCity, secondCity,
+                           (*routesWithRoad)->route->cityLists, NULL,
+                           forbiddenRoad)
+                : dijkstra(map->citySize, map->cities, secondCity, firstCity,
+                           (*routesWithRoad)->route->cityLists, NULL,
+                           forbiddenRoad);
 
         *first = (*first)->next;
         LinkedCity* temp = findRoute(tempList);
@@ -219,9 +233,10 @@ bool fillPotentialReplacementForRoad(Map *map, LinkedRoute** routesWithRoad, Int
     return true;
 }
 
-void hoopRoutes(Map *map, LinkedRoute** routesWithRoad, IntList** first, City* firstCity,
-                City* secondCity, CityLists** newPaths, LinkedRoute** beginsOfRoutes,
-                IntList** earliestBegin, CityLists** newRoutes)
+void hoopRoutes(Map* map, LinkedRoute** routesWithRoad, IntList** first,
+                City* firstCity, City* secondCity, CityLists** newPaths,
+                LinkedRoute** beginsOfRoutes, IntList** earliestBegin,
+                CityLists** newRoutes)
 {
     *newRoutes = *newPaths;
     *first = *earliestBegin;
@@ -232,7 +247,8 @@ void hoopRoutes(Map *map, LinkedRoute** routesWithRoad, IntList** first, City* f
         if((*earliestBegin)->value == 1)
         {
             emplacePath(*routesWithRoad, firstCity, *newRoutes);
-        }else
+        }
+        else
         {
             emplacePath(*routesWithRoad, secondCity, *newRoutes);
         }
@@ -256,7 +272,7 @@ void hoopRoutes(Map *map, LinkedRoute** routesWithRoad, IntList** first, City* f
     eraseNeighbour(&map->roads, firstCity, secondCity);
 }
 
-bool removeRoad(Map *map, const char *city1, const char *city2)
+bool removeRoad(Map* map, const char* city1, const char* city2)
 {
     City* firstCity = getByKey(map->ramp, city1);
     City* secondCity = getByKey(map->ramp, city2);
@@ -276,25 +292,28 @@ bool removeRoad(Map *map, const char *city1, const char *city2)
     Road* forbiddenRoad = firstCity->roads[i];
     LinkedRoute* routes = map->routes;
     IntList* first = NULL;
-    LinkedRoute* routesWithRoad = fillRoutesWithRoad(firstCity, secondCity, routes, &first);
+    LinkedRoute* routesWithRoad =
+        fillRoutesWithRoad(firstCity, secondCity, routes, &first);
     CityLists* newRoutes = NULL;
     CityLists* newPaths = NULL;
     LinkedRoute* beginsOfRoutes = routesWithRoad;
     IntList* earliestBegin = first;
 
-   if(!fillPotentialReplacementForRoad(map, &routesWithRoad, &first, firstCity, secondCity, forbiddenRoad,
-                                       &newPaths, &beginsOfRoutes, &earliestBegin, newRoutes))
-   {
-       return false;
-   }
+    if(!fillPotentialReplacementForRoad(
+           map, &routesWithRoad, &first, firstCity, secondCity, forbiddenRoad,
+           &newPaths, &beginsOfRoutes, &earliestBegin, newRoutes))
+    {
+        return false;
+    }
 
-    hoopRoutes(map, &routesWithRoad, &first, firstCity, secondCity,
-               &newPaths, &beginsOfRoutes, &earliestBegin, &newRoutes);
+    hoopRoutes(map, &routesWithRoad, &first, firstCity, secondCity, &newPaths,
+               &beginsOfRoutes, &earliestBegin, &newRoutes);
 
     return true;
 }
 
-bool addRouteToBegin(Map* map, Route** tempRoute, LinkedRoute** tempRouteList, LinkedCity* route,  unsigned routeId)
+bool addRouteToBegin(Map* map, Route** tempRoute, LinkedRoute** tempRouteList,
+                     LinkedCity* route, unsigned routeId)
 {
     (*tempRoute)->cityLists = route;
     (*tempRoute)->routeNumber = routeId;
@@ -306,9 +325,10 @@ bool addRouteToBegin(Map* map, Route** tempRoute, LinkedRoute** tempRouteList, L
     return true;
 }
 
-bool tryAddRoute(Map* map, City* first, City* second,  unsigned routeId)
+bool tryAddRoute(Map* map, City* first, City* second, unsigned routeId)
 {
-    CityLists* routes = dijkstra(map->citySize, map->cities, first, second, NULL, NULL, NULL);
+    CityLists* routes =
+        dijkstra(map->citySize, map->cities, first, second, NULL, NULL, NULL);
     LinkedCity* route = findRoute(routes);
 
     if(route == NULL)
@@ -333,7 +353,7 @@ bool tryAddRoute(Map* map, City* first, City* second,  unsigned routeId)
     return addRouteToBegin(map, &tempRoute, &tempRouteList, route, routeId);
 }
 
-bool newRoute(Map *map, unsigned routeId, const char *city1, const char *city2)
+bool newRoute(Map* map, unsigned routeId, const char* city1, const char* city2)
 {
     if(!(routeId >= 1 && routeId <= 999))
     {
@@ -383,7 +403,7 @@ bool getEndOfRoute(LinkedCity* cityList, LinkedCity** finish, City* town)
     return true;
 }
 
-bool extendRoute(Map *map, unsigned routeId, const char *city)
+bool extendRoute(Map* map, unsigned routeId, const char* city)
 {
     if(!(routeId >= 1 && routeId <= 999))
     {
@@ -425,25 +445,29 @@ bool extendRoute(Map *map, unsigned routeId, const char *city)
     long beginDestination = 0;
     long endDestination = 0;
 
-    CityLists* fromBeginToTown = dijkstra(map->citySize, map->cities, town, cityList->city, cityList, &beginDestination, NULL);
-    CityLists* fromEndToTown = dijkstra(map->citySize, map->cities, finish->city, town, cityList, &endDestination, NULL);
+    CityLists* fromBeginToTown =
+        dijkstra(map->citySize, map->cities, town, cityList->city, cityList,
+                 &beginDestination, NULL);
+    CityLists* fromEndToTown =
+        dijkstra(map->citySize, map->cities, finish->city, town, cityList,
+                 &endDestination, NULL);
 
     beginDestination = fromBeginToTown == NULL ? INT_MAX : beginDestination;
     endDestination = fromEndToTown == NULL ? INT_MAX : endDestination;
 
-    return fromBeginToTown == NULL && fromEndToTown == NULL ?
-        false :
-        considerDestinations(beginDestination, endDestination, &fromBeginToTown,
-                &fromEndToTown, &finish, &cityList, &route);
+    return fromBeginToTown == NULL && fromEndToTown == NULL
+               ? false
+               : considerDestinations(beginDestination, endDestination,
+                                      &fromBeginToTown, &fromEndToTown, &finish,
+                                      &cityList, &route);
 }
 
-char const* getRouteDescription(Map *map, unsigned routeId)
+char const* getRouteDescription(Map* map, unsigned routeId)
 {
     if(!(routeId >= 1 && routeId <= 999))
     {
         return (char const*)strdupl("");
     }
-
 
     LinkedRoute* consideredRoute = getRouteWithID(map->routes, routeId);
 
@@ -469,9 +493,11 @@ char const* getRouteDescription(Map *map, unsigned routeId)
         text = mergeStrings(text, cityName);
         text = mergeStrings(text, ";");
 
-        int pos = getIdOfRoadBetween(currentCityList->city, currentCityList->next->city);
+        int pos = getIdOfRoadBetween(currentCityList->city,
+                                     currentCityList->next->city);
 
-        char* length = intToString(currentCityList->city->roads[pos]->length, "%u");
+        char* length =
+            intToString(currentCityList->city->roads[pos]->length, "%u");
         text = mergeStrings(text, length);
         text = mergeStrings(text, ";");
         free(length);
@@ -483,13 +509,13 @@ char const* getRouteDescription(Map *map, unsigned routeId)
         currentCityList = currentCityList->next;
     }
 
-
     char* city_name = currentCityList->city->name;
     text = mergeStrings(text, city_name);
     return (char const*)text;
 }
 
-bool pinRouteToRouteList(Map* map, LinkedCity* citiesOfRoute, unsigned int number)
+bool pinRouteToRouteList(Map* map, LinkedCity* citiesOfRoute,
+                         unsigned int number)
 {
     LinkedRoute* tempRouteList = malloc(sizeof(LinkedRoute));
     if(tempRouteList == NULL)
@@ -503,10 +529,12 @@ bool pinRouteToRouteList(Map* map, LinkedCity* citiesOfRoute, unsigned int numbe
         return false;
     }
 
-    return addRouteToBegin(map, &tempRoute, &tempRouteList, citiesOfRoute,  number);
+    return addRouteToBegin(map, &tempRoute, &tempRouteList, citiesOfRoute,
+                           number);
 }
 
-bool checkCorectnessOfArgs(Map* map, char** cities, unsigned int* lengths, int* years, int roadsSize, char* finishRoad)
+bool checkCorectnessOfArgs(Map* map, char** cities, unsigned int* lengths,
+                           int* years, int roadsSize, char* finishRoad)
 {
     if(finishRoad != NULL || map == NULL)
     {
@@ -521,16 +549,17 @@ bool checkCorectnessOfArgs(Map* map, char** cities, unsigned int* lengths, int* 
         }
 
         char* city1 = cities[i];
-        char* city2 = cities[i+1];
-        if(city1 == NULL || city2 == NULL || strcmp(city1,city2) == 0
-           || strcmp(city1, "")  == 0|| strcmp(city2, "") == 0 || !checkString(city1, 0, 31,  ";", 1)
-           || !checkString(city2, 0, 31, ";", 1))
+        char* city2 = cities[i + 1];
+        if(city1 == NULL || city2 == NULL || strcmp(city1, city2) == 0 ||
+           strcmp(city1, "") == 0 || strcmp(city2, "") == 0 ||
+           !checkString(city1, 0, 31, ";", 1) ||
+           !checkString(city2, 0, 31, ";", 1))
         {
             return false;
         }
 
         City* first = getByKey(map->ramp, cities[i]);
-        City* second = getByKey(map->ramp, cities[i+1]);
+        City* second = getByKey(map->ramp, cities[i + 1]);
         if(first == NULL || second == NULL)
         {
             continue;
@@ -551,19 +580,21 @@ bool checkCorectnessOfArgs(Map* map, char** cities, unsigned int* lengths, int* 
     }
 
     return true;
-
 }
 
-bool constructNewRoute(Map* map, char** cities, unsigned int* lengths, int* years, int roadsSize,
-        unsigned int routeNumber, char* finishRoad)
+bool constructNewRoute(Map* map, char** cities, unsigned int* lengths,
+                       int* years, int roadsSize, unsigned int routeNumber,
+                       char* finishRoad)
 {
     if(!(routeNumber >= 1 && routeNumber <= 999) || roadsSize == 0 ||
-       !checkCorectnessOfArgs(map, cities, lengths, years, roadsSize, finishRoad))
+       !checkCorectnessOfArgs(map, cities, lengths, years, roadsSize,
+                              finishRoad))
     {
         return false;
     }
 
-    if(getRouteWithID(map->routes, routeNumber) != NULL || cities == NULL || cities[0] == NULL)
+    if(getRouteWithID(map->routes, routeNumber) != NULL || cities == NULL ||
+       cities[0] == NULL)
     {
         return false;
     }
@@ -580,19 +611,20 @@ bool constructNewRoute(Map* map, char** cities, unsigned int* lengths, int* year
     {
         citiesOfRoute->city = initCity(map->citySize, map->ramp, cities[0]);
         addCityToMap(map, citiesOfRoute->city);
-    }else
+    }
+    else
     {
         citiesOfRoute->city = first;
     }
     citiesOfRoute->next = NULL;
-    for(int i = 0; i< roadsSize; i++)
+    for(int i = 0; i < roadsSize; i++)
     {
         if(finishRoad != NULL && strcmp(finishRoad, cities[i]) == 0)
         {
             break;
         }
 
-        if(!updateRoad(map, cities[i], cities[i+1], lengths[i], years[i]))
+        if(!updateRoad(map, cities[i], cities[i + 1], lengths[i], years[i]))
         {
             freeLinkedCity(citiesOfRoute);
             return false;
@@ -603,7 +635,7 @@ bool constructNewRoute(Map* map, char** cities, unsigned int* lengths, int* year
             freeLinkedCity(citiesOfRoute);
             return false;
         }
-        itr->next->city = getByKey(map->ramp, cities[i+1]);
+        itr->next->city = getByKey(map->ramp, cities[i + 1]);
         itr->next->next = NULL;
         itr = itr->next;
     }
@@ -639,7 +671,7 @@ bool removeRoute(Map* map, unsigned routeId)
         itr = itr->next;
     }
 
-    if (itr == NULL)
+    if(itr == NULL)
     {
         return false;
     }

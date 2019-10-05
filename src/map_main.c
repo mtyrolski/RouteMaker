@@ -24,7 +24,8 @@ int main()
     bool edgeBeginFlag = false;
     while(readLine(inputManager, &buffer, &bufferSize, &edgeBeginFlag))
     {
-        if(edgeBeginFlag || (strcmp(buffer, "") != 0 && buffer[0] != '#' && !takeAction(inputManager, m, buffer)))
+        if(edgeBeginFlag || (strcmp(buffer, "") != 0 && buffer[0] != '#' &&
+                             !takeAction(inputManager, m, buffer)))
         {
             fprintf(stderr, "ERROR %ld\n", inputManager->lineNr);
         }

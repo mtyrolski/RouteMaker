@@ -31,8 +31,8 @@ AVLNode* rightRotate(AVLNode* node)
     AVLNode* temp = newNode->right;
     newNode->right = node;
     node->left = temp;
-    node->height = max(height(node->left), height(node->right))+1;
-    newNode->height = max(height(newNode->left), height(newNode->right))+1;
+    node->height = max(height(node->left), height(node->right)) + 1;
+    newNode->height = max(height(newNode->left), height(newNode->right)) + 1;
 
     return newNode;
 }
@@ -43,15 +43,15 @@ AVLNode* leftRotate(AVLNode* node)
     AVLNode* temp = newNode->left;
     newNode->left = node;
     node->right = temp;
-    node->height = max(height(node->left), height(node->right))+1;
-    newNode->height = max(height(newNode->left), height(newNode->right))+1;
+    node->height = max(height(node->left), height(node->right)) + 1;
+    newNode->height = max(height(newNode->left), height(newNode->right)) + 1;
 
     return newNode;
 }
 
 int getBalance(AVLNode* node)
 {
-    if (node == NULL)
+    if(node == NULL)
     {
         return 0;
     }
@@ -59,12 +59,11 @@ int getBalance(AVLNode* node)
     return height(node->left) - height(node->right);
 }
 
-
 AVLNode* insert(AVLNode* node, char* key, bool* repeat)
 {
     if(node == NULL)
     {
-        return(newNode(key));
+        return (newNode(key));
     }
 
     if(strcmp(key, node->key) < 0)
@@ -87,24 +86,25 @@ AVLNode* insert(AVLNode* node, char* key, bool* repeat)
 
     if(balance > 1)
     {
-        if (strcmp(key, node->left->key) < 0)
+        if(strcmp(key, node->left->key) < 0)
         {
             return rightRotate(node);
         }
 
-        if (balance > 1 && strcmp(key, node->left->key) > 0)
+        if(balance > 1 && strcmp(key, node->left->key) > 0)
         {
-            node->left =  leftRotate(node->left);
+            node->left = leftRotate(node->left);
             return rightRotate(node);
         }
-    }else if(balance < -1)
+    }
+    else if(balance < -1)
     {
-        if (strcmp(key, node->right->key) > 0)
+        if(strcmp(key, node->right->key) > 0)
         {
             return leftRotate(node);
         }
 
-        if (strcmp(key, node->right->key) < 0)
+        if(strcmp(key, node->right->key) < 0)
         {
             node->right = rightRotate(node->right);
             return leftRotate(node);

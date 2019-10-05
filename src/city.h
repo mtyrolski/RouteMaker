@@ -7,57 +7,59 @@
 #ifndef __CITY_H__
 #define __CITY_H__
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <limits.h>
-#include <string.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "int_list.h"
 #include "road.h"
 #include "utils.h"
 
 /**
- * Struct which represents single city. Contains basic informations such name, roads, neighbours and id
+ * Struct which represents single city. Contains basic informations such name,
+ * roads, neighbours and id
  */
 typedef struct City
 {
-    char* name;                 ///< name of city
-    Road** roads;               ///< roads around the city
-    struct City** neighbours;   ///< neighbours of city
-    int numberOfNeighbours;     ///< number of neigbours
-    int id;                     ///< unique id of city
-}City;
+    char* name;                ///< name of city
+    Road** roads;              ///< roads around the city
+    struct City** neighbours;  ///< neighbours of city
+    int numberOfNeighbours;    ///< number of neigbours
+    int id;                    ///< unique id of city
+} City;
 
 /**
  * Struct which represents linked list of citiess
  */
 typedef struct LinkedCity
 {
-    City* city;                 ///< pointer to current city
-    struct LinkedCity* next;    ///< next cell of linked list
-}LinkedCity;
+    City* city;               ///< pointer to current city
+    struct LinkedCity* next;  ///< next cell of linked list
+} LinkedCity;
 
 /**
  * Struct which represents linked list of city linked list
  */
 typedef struct CityLists
 {
-    LinkedCity* cityList;       ///< pointer to current city linked list
-    struct CityLists* next;     ///<  next cell of linked list
-}CityLists;
+    LinkedCity* cityList;    ///< pointer to current city linked list
+    struct CityLists* next;  ///<  next cell of linked list
+} CityLists;
 
 /**
- * Struct which represents tree representation of cities in graph. Used mainly for performance
+ * Struct which represents tree representation of cities in graph. Used mainly
+ * for performance
  */
 typedef struct Tree
 {
-    char* key;          ///<  key (there name) of node
-    City* value;        ///<  value (there pointer to city) of node
-    struct Tree* left;  ///<  left son
-    struct Tree* right; ///<  right son
-    bool isRoot;        ///<  flag for total root of tree
-}Tree;
+    char* key;           ///<  key (there name) of node
+    City* value;         ///<  value (there pointer to city) of node
+    struct Tree* left;   ///<  left son
+    struct Tree* right;  ///<  right son
+    bool isRoot;         ///<  flag for total root of tree
+} Tree;
 
 /**
  * @brief adds neghbour new for current city
@@ -104,7 +106,7 @@ City* getByKey(Tree* tree, const char* key);
  * @return pointer to updated tree
  * @warning key is stored separately to faster access.
  */
-Tree* addToTree(Tree* tree, const char *key, City *value);
+Tree* addToTree(Tree* tree, const char* key, City* value);
 
 /**
  * @brief initialize city with starting data

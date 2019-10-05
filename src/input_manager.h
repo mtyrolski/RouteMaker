@@ -6,14 +6,14 @@
 #ifndef __INPUT_MANAGER_H__
 #define __INPUT_MANAGER_H__
 
-#include "string_vector.h"
-#include "string.h"
-#include "stdbool.h"
-#include "avl_tree.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include "avl_tree.h"
 #include "map.h"
+#include "stdbool.h"
+#include "string.h"
+#include "string_vector.h"
 #include "utils.h"
 
 /**
@@ -21,9 +21,9 @@
  */
 typedef struct InputManager
 {
-    unsigned long lineNr;   ///< number of current line
-    StringVector* vector;   ///< vector of string
-}InputManager;
+    unsigned long lineNr;  ///< number of current line
+    StringVector* vector;  ///< vector of string
+} InputManager;
 
 /**
  * @brief allocate input manager and returns it
@@ -36,10 +36,12 @@ InputManager* initInputManager();
  * @param[in] inputManager - controls input
  * @param[in] buffer - container for input line
  * @param[in] bufferSize - current size of buffer
- * @param[in, out] edgeBeginCharacter - flag which informs if string is empty due to \0 on the beginning
+ * @param[in, out] edgeBeginCharacter - flag which informs if string is empty
+ * due to \0 on the beginning
  * @return false if buffer contains EOF, true otherwise
  */
-bool readLine(InputManager* inputManager, char** buffer, size_t* bufferSize, bool* edgeBeginCharacter);
+bool readLine(InputManager* inputManager, char** buffer, size_t* bufferSize,
+              bool* edgeBeginCharacter);
 
 /**
  * @brief Takes manager, map and buffer and process program action
@@ -49,7 +51,5 @@ bool readLine(InputManager* inputManager, char** buffer, size_t* bufferSize, boo
  * @return true if output of program is without problems, false otherwise
  */
 bool takeAction(InputManager* inputManager, Map* map, char* buffer);
-
-
 
 #endif /* __INPUT_MANAGER_H__ */

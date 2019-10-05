@@ -31,8 +31,9 @@ City* initCity(int currentMapSize, Tree* ramp, const char* cityName)
 void addNeighbour(City* current, City* new)
 {
     current->numberOfNeighbours++;
-    current->neighbours = realloc(current->neighbours, current->numberOfNeighbours*sizeof(City*));
-    current->neighbours[current->numberOfNeighbours-1] = new;
+    current->neighbours = realloc(current->neighbours,
+                                  current->numberOfNeighbours * sizeof(City*));
+    current->neighbours[current->numberOfNeighbours - 1] = new;
 }
 
 bool containsNeighbour(City* first, City* second)
@@ -56,15 +57,14 @@ Tree* treeCreate()
         return NULL;
     }
 
-    root->key = "o"; //origin
+    root->key = "o";  // origin
     root->isRoot = true;
     root->left = NULL;
     root->right = NULL;
     return root;
 }
 
-
-Tree* addToTree(Tree* tree, const char *key, City *value)
+Tree* addToTree(Tree* tree, const char* key, City* value)
 {
     if(tree == NULL)
     {
@@ -87,17 +87,18 @@ Tree* addToTree(Tree* tree, const char *key, City *value)
         if(tree->isRoot)
         {
             tree->left = addToTree(tree->left, key, value);
-        }else
+        }
+        else
         {
             return NULL;
         }
     }
 
-
     if(strcmp(tree->key, key) < 0)
     {
         tree->left = addToTree(tree->left, key, value);
-    }else
+    }
+    else
     {
         tree->right = addToTree(tree->right, key, value);
     }
@@ -116,7 +117,6 @@ void freeLinkedCity(LinkedCity* cityList)
     }
 }
 
-
 City* getByKey(Tree* tree, const char* key)
 {
     if(tree == NULL)
@@ -129,17 +129,15 @@ City* getByKey(Tree* tree, const char* key)
         return tree->value;
     }
 
-    return strcmp(tree->key, key) >= 0 ?
-        getByKey(tree->right, key) :
-        getByKey(tree->left, key);
+    return strcmp(tree->key, key) >= 0 ? getByKey(tree->right, key)
+                                       : getByKey(tree->left, key);
 }
 
 Tree* minValueNode(Tree* node)
 {
     Tree* current = node;
 
-    while(current->left != NULL)
-        current = current->left;
+    while(current->left != NULL) current = current->left;
 
     return current;
 }
@@ -168,15 +166,15 @@ Tree* deleteNode(Tree* root, const char* key)
     {
         root->left = deleteNode(root->left, key);
     }
-    else if (strcmp(key, root->key) > 0)
+    else if(strcmp(key, root->key) > 0)
     {
         root->right = deleteNode(root->right, key);
     }
     else
     {
-        if (root->left == NULL)
+        if(root->left == NULL)
         {
-            Tree *temp = root->right;
+            Tree* temp = root->right;
             free(root);
             return temp;
         }
@@ -204,7 +202,8 @@ int getIdOfRoadBetween(City* first, City* second)
     return itr == first->numberOfNeighbours ? -1 : itr;
 }
 
-bool repinElements(LinkedCity** firstListIter, LinkedCity** temp, LinkedCity** output)
+bool repinElements(LinkedCity** firstListIter, LinkedCity** temp,
+                   LinkedCity** output)
 {
     LinkedCity* element = malloc(sizeof(LinkedCity));
 
@@ -220,7 +219,8 @@ bool repinElements(LinkedCity** firstListIter, LinkedCity** temp, LinkedCity** o
     {
         *temp = element;
         *output = element;
-    }else
+    }
+    else
     {
         (*temp)->next = element;
         (*temp) = (*temp)->next;
@@ -249,7 +249,7 @@ void updateMaxYear(int* maxYear, CityLists** itrFirst)
     LinkedCity* temp = (*itrFirst)->cityList;
     while(temp->next != NULL)
     {
-        int index =0;
+        int index = 0;
         while(temp->city->neighbours[index] != temp->next->city)
         {
             index++;
@@ -262,7 +262,8 @@ void updateMaxYear(int* maxYear, CityLists** itrFirst)
     }
 }
 
-void updateListsInFindingRoute(int* maxYear, IntList** begin, IntList** max, CityLists** itrFirst)
+void updateListsInFindingRoute(int* maxYear, IntList** begin, IntList** max,
+                               CityLists** itrFirst)
 {
     IntList* temp = malloc(sizeof(IntList));
     temp->value = *maxYear;
@@ -280,7 +281,8 @@ void updateListsInFindingRoute(int* maxYear, IntList** begin, IntList** max, Cit
     *itrFirst = (*itrFirst)->next;
 }
 
-void findOldestRoad(int* maxYear, IntList** begin, IntList** max, CityLists** itrFirst)
+void findOldestRoad(int* maxYear, IntList** begin, IntList** max,
+                    CityLists** itrFirst)
 {
     while(*itrFirst != NULL)
     {
@@ -302,7 +304,8 @@ int howManySimilarValues(IntList** begin, int* index)
             min = (*begin)->value;
             equalities = 1;
             *index = j;
-        }else if((*begin)->value == min)
+        }
+        else if((*begin)->value == min)
         {
             equalities++;
         }
@@ -348,8 +351,6 @@ LinkedCity* findRoute(CityLists* routes)
     freeCityLists(routes);
     return NULL;
 }
-
-
 
 void deleteCities(City** cities, unsigned size)
 {
@@ -419,7 +420,7 @@ bool tryRepairRoad(City* first, City* second, int repairYear)
     return true;
 }
 
-LinkedCity *initLinkedCity(City *city, LinkedCity *next)
+LinkedCity* initLinkedCity(City* city, LinkedCity* next)
 {
     LinkedCity* temp = malloc(sizeof(LinkedCity));
     temp->city = city;
@@ -432,8 +433,8 @@ void repinNeighboursWithout(City* city, int* itr)
     city->numberOfNeighbours--;
     while(*itr < city->numberOfNeighbours)
     {
-        city->neighbours[*itr] = city->neighbours[*itr+1];
-        city->roads[*itr] = city->roads[*itr+1];
+        city->neighbours[*itr] = city->neighbours[*itr + 1];
+        city->roads[*itr] = city->roads[*itr + 1];
         (*itr)++;
     }
 }
@@ -447,18 +448,23 @@ void eraseNeighbour(LinkedRoad** roads, City* first, City* second)
     repinNeighboursWithout(first, &i);
     repinNeighboursWithout(second, &j);
 
-    first->neighbours = realloc(first->neighbours, first->numberOfNeighbours * sizeof(City*));
-    second->neighbours = realloc(second->neighbours, second->numberOfNeighbours * sizeof(City*));
-    first->roads = realloc(first->roads, first->numberOfNeighbours * sizeof(Road*));
-    second->roads = realloc(second->roads, second->numberOfNeighbours * sizeof(Road*));
+    first->neighbours =
+        realloc(first->neighbours, first->numberOfNeighbours * sizeof(City*));
+    second->neighbours =
+        realloc(second->neighbours, second->numberOfNeighbours * sizeof(City*));
+    first->roads =
+        realloc(first->roads, first->numberOfNeighbours * sizeof(Road*));
+    second->roads =
+        realloc(second->roads, second->numberOfNeighbours * sizeof(Road*));
 
     LinkedRoad* roadList = *roads;
     if(roadList->road == destinedToDelete)
     {
         *roads = (*roads)->next;
-        free (roadList->road);
-        free (roadList);
-    }else
+        free(roadList->road);
+        free(roadList);
+    }
+    else
     {
         deleteRoadFromLinkedRoad(roadList, destinedToDelete);
     }

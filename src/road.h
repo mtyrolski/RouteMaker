@@ -10,22 +10,23 @@
 #include <stdlib.h>
 
 /**
- * Struct which represents single road and contains basic informations about that
+ * Struct which represents single road and contains basic informations about
+ * that
  */
 typedef struct Road
 {
-    unsigned length;     ///<  length of road
-    int year;       ///<  year of last renovation
-}Road;
+    unsigned length;  ///<  length of road
+    int year;         ///<  year of last renovation
+} Road;
 
 /**
  * Struct which represents linked list of roads
  */
 typedef struct LinkedRoad
 {
-    Road* road;                 ///<  pointer to current road
-    struct LinkedRoad* next;    ///<  next cell in linked list
-}LinkedRoad;
+    Road* road;               ///<  pointer to current road
+    struct LinkedRoad* next;  ///<  next cell in linked list
+} LinkedRoad;
 
 /**
  * @brief deallocate roads

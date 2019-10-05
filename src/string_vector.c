@@ -10,14 +10,14 @@ StringVector* initVector(int size)
     vector->bufferSize = size;
     vector->size = 0;
 
-    vector->content = malloc(size*sizeof(char*));
+    vector->content = malloc(size * sizeof(char*));
     if(vector->content == NULL)
     {
         free(vector);
         return NULL;
     }
 
-    for(int i = 0; i<size;i++)
+    for(int i = 0; i < size; i++)
     {
         vector->content[i] = NULL;
     }
@@ -31,7 +31,7 @@ StringVector* doubleVector(StringVector** vector)
         return NULL;
     }
 
-    StringVector* newVector = initVector((*vector)->bufferSize*2);
+    StringVector* newVector = initVector((*vector)->bufferSize * 2);
 
     if(newVector == NULL)
     {
@@ -76,4 +76,3 @@ void resetVector(StringVector** vector, bool reinit)
         *vector = initVector(DEFAULT_CAPACITY);
     }
 }
-
