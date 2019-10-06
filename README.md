@@ -21,21 +21,28 @@ Before describing specific modules there should be assumed following definitions
 ## Interface
 Interface map.h provedies functions described below:<br>
 
-| function | T(n) | M(n) |
+| Function | T(n) | M(n) |
 |     :---:      |     :---:      |     :---:      |
-| Map* newMap(...)   |  g  |  g   |
-| bool addRoad(...)   |  g   |  g   |
-| bool repairRoad(...)   |  g   |  g   |
-| bool newRoute(...)  |  g   |  g   |
-| bool extendRoute(...)  |  g   |  g   |
-| bool removeRoad(...)   |  g   |  g   |
-| char const* getRouteDescription(...)   |  g   |  g   |
-| bool constructNewRoute(...) |  g   |  g   |
-| bool removeRoute(...)   |  g   |  g   |
+| Map* newMap(...)   |  O(1)  |  O(1)   |
+| bool addRoad(...)   |  O(log(c))   |  O(1)   |
+| bool repairRoad(...)   |  O(log(c))   |  O(1)   |
+| bool newRoute(...)  |  O(r * log(c) + R)   |  O(c)   |
+| bool extendRoute(...)  |  O(R + r * log(c))   |  O(c)   |
+| bool removeRoad(...)   |  O(c + R + r * log(c))   |  O(c)   |
+| char const* getRouteDescription(...)   |  O(R+c)   |  O(c)   |
+| bool constructNewRoute(...) |  O(n)   |  O(n)  |
+| bool removeRoute(...)   |  O(R)   |  O(1)   |
 
 <br>
 
 Each of them is **in great detail** descibed in `map.h`.
+
+```
+c := cities number in current map
+n := cities number in upcoming request
+r := roads number
+R := routes number
+```
 
 ## Query parser
 Allows to calls program for concrete functions and also implements additional functionality.
