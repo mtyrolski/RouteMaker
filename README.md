@@ -82,9 +82,14 @@ cmake ..
 make
 ```
 After that each module can be used as described in that readme.
-## Testy
-soon
+## Tests
+There are 2 additional scripts for testing project. It uses mainly query parser but since parser uses `map.h` it generally tests each functionality of project. <br>
 
+`test_output.sh` - takes each `.in` file from given path and compare output with `.out` and `.err` file. <br>
+`test_valgrind.sh` - takes each `.in` file from given path, passes program via `valgrind` and checks if there is no memory problems. <br><br>
+
+Dataset for testing can be found in link: https://www.mediafire.com/file/7lvfkj91r29coo2/tesciory-3.zip/file. 
+There are 960 files with 4.652.570 lines of reqests in total.
 ## Docs
-Whole project is documented using `Doxygen`. To generate documentation type `make doc`. You should have installed `Doxygen` and its dependencies. 
+Whole project is documented using `Doxygen`. To generate documentation type `make doc`. <br><br>You should have installed `Doxygen` and its dependencies. 
 
