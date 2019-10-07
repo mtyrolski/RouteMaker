@@ -1,8 +1,7 @@
 /** @file
  * Interface for AVL Trees which improve performance of checking input
- *
- * @author Michał Tyrolski
  */
+
 #ifndef __AVL_TREE_H__
 #define __AVL_TREE_H__
 

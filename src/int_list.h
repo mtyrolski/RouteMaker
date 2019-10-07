@@ -1,7 +1,5 @@
 /** @file
  * Interface for IntList which represents linked list of ints
- *
- * @author Michał Tyrolski
  */
 
 #ifndef __INT_LIST_H__

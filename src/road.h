@@ -1,7 +1,5 @@
 /** @file
  * Interface for road used in the map of national roads
- *
- * @author Michał Tyrolski
  */
 
 #ifndef __ROAD_H__

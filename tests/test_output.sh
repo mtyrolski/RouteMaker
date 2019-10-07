@@ -9,7 +9,7 @@ fi
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
-PROG=map
+PROG=routemaker
 TESTDIR=$1
 CORRECT=0
 WRONG=0

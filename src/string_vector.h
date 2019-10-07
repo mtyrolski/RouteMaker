@@ -1,7 +1,5 @@
 /** @file
  * Interface of structure vector with string (char*) type
- *
- * @author Michał Tyrolski
  */
 
 #ifndef __STRING_VECTOR_H__

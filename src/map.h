@@ -16,6 +16,7 @@
 #include "queue.h"
 #include "route.h"
 #include "utils.h"
+#include "config.h"
 
 /**
  * Struct which contains data about country routes

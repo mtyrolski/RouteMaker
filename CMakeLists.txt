@@ -33,7 +33,8 @@ set(SOURCE_FILES
         src/string_vector.h
         src/string_vector.c
         src/avl_tree.h
-        src/avl_tree.c)
+        src/avl_tree.c
+        src/config.h)
 
 add_executable(routemaker ${SOURCE_FILES})
 

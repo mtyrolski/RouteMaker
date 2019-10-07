@@ -1,7 +1,5 @@
 /** @file
  * File which contains utilities
- *
- * @author Michał Tyrolski
  */
 
 #ifndef __UTILS_H__

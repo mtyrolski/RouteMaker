@@ -260,7 +260,8 @@ bool validateNewRoute(InputManager* inputManager, Map* map)
     }
 
     bool flagRouteId;
-    unsigned routeIdVal = (unsigned)str2int(routeId, 10, &flagRouteId, 1, 999);
+
+    unsigned routeIdVal = (unsigned)str2int(routeId, 10, &flagRouteId, MIN_ROUTE_ID, MAX_ROUTE_ID);
 
     return !routeIdVal ? false : newRoute(map, routeIdVal, city1, city2);
 }
@@ -281,7 +282,7 @@ bool validateExtendRoute(InputManager* inputManager, Map* map)
     }
 
     bool flagRouteId;
-    unsigned routeIdVal = (unsigned)str2int(routeId, 10, &flagRouteId, 1, 999);
+    unsigned routeIdVal = (unsigned)str2int(routeId, 10, &flagRouteId, MIN_ROUTE_ID, MAX_ROUTE_ID);
 
     return !routeIdVal ? false : extendRoute(map, routeIdVal, city);
 }
@@ -365,38 +366,38 @@ bool takeAction(InputManager* inputManager, Map* map, char* buffer)
         emplaceBack(inputManager->vector, dupArg);
         arg = strtok(NULL, ";\n");
     }
-    if(strcmp(command, "addRoad") == 0 && semicolonCounter == 4)
+    if(strcmp(command, "addRoad") == 0 && semicolonCounter == ADD_ROAD_SEMICOLONS)
     {
         free(command);
         return validateAddRoad(inputManager, map);
     }
-    else if(strcmp(command, "repairRoad") == 0 && semicolonCounter == 3)
+    else if(strcmp(command, "repairRoad") == 0 && semicolonCounter == REPAIR_ROAD_SEMICOLONS)
     {
         free(command);
         return validateRepairRoad(inputManager, map);
     }
     else if(strcmp(command, "getRouteDescription") == 0 &&
-            semicolonCounter == 1)
+            semicolonCounter == GET_DESCR_SEMICOLONS)
     {
         free(command);
         return validateGetRouteDescription(inputManager, map);
     }
-    else if(strcmp(command, "newRoute") == 0 && semicolonCounter == 3)
+    else if(strcmp(command, "newRoute") == 0 && semicolonCounter == NEW_ROUTE_SEMICOLONS)
     {
         free(command);
         return validateNewRoute(inputManager, map);
     }
-    else if(strcmp(command, "extendRoute") == 0 && semicolonCounter == 2)
+    else if(strcmp(command, "extendRoute") == 0 && semicolonCounter == EXTEND_ROUTE_SEMICOLONS)
     {
         free(command);
         return validateExtendRoute(inputManager, map);
     }
-    else if(strcmp(command, "removeRoad") == 0 && semicolonCounter == 2)
+    else if(strcmp(command, "removeRoad") == 0 && semicolonCounter == REMOVE_ROAD_SEMICOLONS)
     {
         free(command);
         return validateRemoveRoad(inputManager, map);
     }
-    else if(strcmp(command, "removeRoute") == 0 && semicolonCounter == 1)
+    else if(strcmp(command, "removeRoute") == 0 && semicolonCounter == REMOVE_ROUTE_SEMICOLONS)
     {
         free(command);
         return validateRemoveRoute(inputManager, map);

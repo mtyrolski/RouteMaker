@@ -1,7 +1,5 @@
 /** @file
  * Interface for City and other struct which are strongly connected with cities.
- *
- * @author Michał Tyrolski
  */
 
 #ifndef __CITY_H__

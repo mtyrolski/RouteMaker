@@ -1,7 +1,5 @@
 /** @file
  * Interface for managing standard input
- *
- * @author Michał Tyrolski
  */
 #ifndef __INPUT_MANAGER_H__
 #define __INPUT_MANAGER_H__
@@ -15,6 +13,7 @@
 #include "string.h"
 #include "string_vector.h"
 #include "utils.h"
+#include "config.h"
 
 /**
  * Struct which represents input manager

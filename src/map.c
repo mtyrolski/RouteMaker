@@ -355,7 +355,7 @@ bool tryAddRoute(Map* map, City* first, City* second, unsigned routeId)
 
 bool newRoute(Map* map, unsigned routeId, const char* city1, const char* city2)
 {
-    if(!(routeId >= 1 && routeId <= 999))
+    if(!(routeId >= MIN_ROUTE_ID && routeId <= MAX_ROUTE_ID))
     {
         return false;
     }
@@ -405,7 +405,7 @@ bool getEndOfRoute(LinkedCity* cityList, LinkedCity** finish, City* town)
 
 bool extendRoute(Map* map, unsigned routeId, const char* city)
 {
-    if(!(routeId >= 1 && routeId <= 999))
+    if(!(routeId >= MIN_ROUTE_ID && routeId <= MAX_ROUTE_ID))
     {
         return false;
     }
@@ -464,7 +464,7 @@ bool extendRoute(Map* map, unsigned routeId, const char* city)
 
 char const* getRouteDescription(Map* map, unsigned routeId)
 {
-    if(!(routeId >= 1 && routeId <= 999))
+    if(!(routeId >= MIN_ROUTE_ID && routeId <= MAX_ROUTE_ID))
     {
         return (char const*)strdupl("");
     }
@@ -586,7 +586,7 @@ bool constructNewRoute(Map* map, char** cities, unsigned int* lengths,
                        int* years, int roadsSize, unsigned int routeNumber,
                        char* finishRoad)
 {
-    if(!(routeNumber >= 1 && routeNumber <= 999) || roadsSize == 0 ||
+    if(!(routeNumber >= MIN_ROUTE_ID && routeNumber <= MAX_ROUTE_ID) || roadsSize == 0 ||
        !checkCorectnessOfArgs(map, cities, lengths, years, roadsSize,
                               finishRoad))
     {

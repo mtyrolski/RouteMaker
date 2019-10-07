@@ -59,4 +59,7 @@ release/
 debug/
 cmake-build-debug/
 
+# Tests
+tests/dataset/
+
 

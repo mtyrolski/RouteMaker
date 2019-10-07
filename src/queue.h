@@ -1,7 +1,5 @@
 /** @file
  * Interface for queue prepared for dijkstra algorithm
- *
- * @author Michał Tyrolski
  */
 
 #ifndef __QUEUE_H__

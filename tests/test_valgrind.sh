@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROG=map
+PROG=routemaker
 TESTDIR=$1
 
 LEAKEXITCODE=42
