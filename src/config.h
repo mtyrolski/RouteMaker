@@ -33,7 +33,7 @@
 #define EXTEND_ROUTE_SEMICOLONS 2
 
 /// Semicolons number for remove road
-#define REMOVE_ROAD_SEMICOLONS 1
+#define REMOVE_ROAD_SEMICOLONS 2
 
 /// Semicolons number for remove route
 #define REMOVE_ROUTE_SEMICOLONS 1
