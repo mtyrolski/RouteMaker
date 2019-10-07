@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(Drogi C)
+project(RouteMaker C)
 
 if (NOT CMAKE_BUILD_TYPE)
     message(STATUS "No build type selected, default to Release")
@@ -11,8 +11,6 @@ set_property(GLOBAL PROPERTY RULE_MESSAGES OFF)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_C_FLAGS "-std=c11 -Wall -Wextra")
-# set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
-# set(CMAKE_C_FLAGS_DEBUG "-g")
 
 set(SOURCE_FILES
         src/map_main.c
@@ -37,7 +35,7 @@ set(SOURCE_FILES
         src/avl_tree.h
         src/avl_tree.c)
 
-add_executable(map ${SOURCE_FILES})
+add_executable(routemaker ${SOURCE_FILES})
 
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
