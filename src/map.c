@@ -61,7 +61,7 @@ bool tryInitCities(Map* map, const char* city1, const char* city2)
 {
     if(city1 == NULL || city2 == NULL || strcmp(city1, city2) == 0 ||
        strcmp(city1, "") == 0 || strcmp(city2, "") == 0 ||
-       !checkString(city1, 0, 31, ";", 1) || !checkString(city2, 0, 31, ";", 1))
+       !checkString(city1, FORBIDDEN_ASCII_BEGIN, FORBIDDEN_ASCII_END, ";", 1) || !checkString(city2, FORBIDDEN_ASCII_BEGIN, FORBIDDEN_ASCII_END, ";", 1))
     {
         return false;
     }
@@ -552,8 +552,8 @@ bool checkCorectnessOfArgs(Map* map, char** cities, unsigned int* lengths,
         char* city2 = cities[i + 1];
         if(city1 == NULL || city2 == NULL || strcmp(city1, city2) == 0 ||
            strcmp(city1, "") == 0 || strcmp(city2, "") == 0 ||
-           !checkString(city1, 0, 31, ";", 1) ||
-           !checkString(city2, 0, 31, ";", 1))
+           !checkString(city1, FORBIDDEN_ASCII_BEGIN, FORBIDDEN_ASCII_END, ";", 1) ||
+           !checkString(city2, FORBIDDEN_ASCII_BEGIN, FORBIDDEN_ASCII_END, ";", 1))
         {
             return false;
         }
