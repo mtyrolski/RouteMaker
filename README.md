@@ -90,6 +90,8 @@ There are 2 additional scripts for testing project. It uses mainly query parser 
 
 Dataset for testing can be found in link: https://www.mediafire.com/file/7lvfkj91r29coo2/tesciory-3.zip/file. 
 There are 960 files with 4.652.570 lines of reqests in total.
+<br><br>
+Average time for over **1 million** requests is about 20 seconds (= 50.000/s) on `AMD RYZEN 5 2600`.
 ## Docs
 Whole project is documented using `Doxygen`. To generate documentation type `make doc`. <br><br>You should have installed `Doxygen` and its dependencies. 
 
