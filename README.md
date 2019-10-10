@@ -1,5 +1,5 @@
 ## RouteMaker
-The tool below presents a complex tool for handling national road maps. The project contains 3 modules.
+The project below presents a complex tool for handling national road maps. The code contains 3 modules.
 
 ## Modules
 Below are listed main modules of project and their brief description. Details are in sections corresponding to modules' names<br>
